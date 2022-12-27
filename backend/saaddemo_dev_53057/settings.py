@@ -45,19 +45,17 @@ try:
 except (DefaultCredentialsError, PermissionDenied):
     pass
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env.str("SECRET_KEY")
+SECRET_KEY = env.str("SECRET_KEY", "1234569879")
 
 ALLOWED_HOSTS = env.list("HOST", default=["*"])
 SITE_ID = 1
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_SSL_REDIRECT = env.bool("SECURE_REDIRECT", default=False)
-
 
 # Application definition
 
@@ -123,7 +121,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'saaddemo_dev_53057.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -138,7 +135,6 @@ if env.str("DATABASE_URL", default=None):
     DATABASES = {
         'default': env.db()
     }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -158,7 +154,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -167,7 +162,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -224,7 +218,6 @@ EMAIL_HOST_PASSWORD = env.str("SENDGRID_PASSWORD", "")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-
 # AWS S3 config
 AWS_ACCESS_KEY_ID = env.str("AWS_ACCESS_KEY_ID", "")
 AWS_SECRET_ACCESS_KEY = env.str("AWS_SECRET_ACCESS_KEY", "")
@@ -232,10 +225,10 @@ AWS_STORAGE_BUCKET_NAME = env.str("AWS_STORAGE_BUCKET_NAME", "")
 AWS_STORAGE_REGION = env.str("AWS_STORAGE_REGION", "")
 
 USE_S3 = (
-    AWS_ACCESS_KEY_ID and
-    AWS_SECRET_ACCESS_KEY and
-    AWS_STORAGE_BUCKET_NAME and
-    AWS_STORAGE_REGION
+        AWS_ACCESS_KEY_ID and
+        AWS_SECRET_ACCESS_KEY and
+        AWS_STORAGE_BUCKET_NAME and
+        AWS_STORAGE_REGION
 )
 
 if USE_S3:
@@ -256,7 +249,7 @@ SPECTACULAR_SETTINGS = {
         "persistAuthorization": True,
         "displayOperationId": True,
     },
-    "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAuthenticated"],\
+    "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAuthenticated"], \
     "TITLE": "saaddemo_dev_53057 API",
     "DESCRIPTION": "API documentation for saaddemo_dev_53057 App",
     "VERSION": "v1",
@@ -279,6 +272,8 @@ def google_service_account_config():
         return json.loads(base64.b64decode(service_account_config))
     except (binascii.Error, ValueError):
         return {}
+
+
 GOOGLE_SERVICE_ACCOUNT_CONFIG = google_service_account_config()
 if GOOGLE_SERVICE_ACCOUNT_CONFIG:
     GS_CREDENTIALS = service_account.Credentials.from_service_account_info(GOOGLE_SERVICE_ACCOUNT_CONFIG)
@@ -287,3 +282,11 @@ if GS_BUCKET_NAME:
     DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
     STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
     GS_DEFAULT_ACL = "publicRead"
+
+HUBSPOT_URL = 'https://api.hubapi.com/'
+GRANT_TYPE = "authorization_code",
+REDIRECT_URL = 'your_redirect_url',
+CLIENT_ID = 'your_app_client_id',
+CLIENT_SECRET = 'your_app_client_secret',
+PARENT_FOLDER = ""
+SLACK_BOT_TOKEN = ""
